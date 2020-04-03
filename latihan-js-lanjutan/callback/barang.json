@@ -1,0 +1,17 @@
+[
+  {
+    "nama": "sepatu",
+    "harga": 2000,
+    "idType": 1
+  },
+  {
+    "nama": "jaket",
+    "harga": 1000,
+    "idType": 1
+  },
+  {
+    "nama": "Moisturizer",
+    "hobi": 2500,
+    "idType": 2
+  }
+]
