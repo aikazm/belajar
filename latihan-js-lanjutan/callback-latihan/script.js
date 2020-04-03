@@ -1,37 +1,70 @@
-$(".search-button").on("click", function() {
-  $.ajax({
-    url:
-      "http://www.omdbapi.com/?apikey=44254820&s=" + $(".input-keyword").val(),
-    success: results => {
-      const movies = results.Search;
+// $(".search-button").on("click", function() {
+//   $.ajax({
+//     url:
+//       "http://www.omdbapi.com/?apikey=44254820&s=" + $(".input-keyword").val(),
+//     success: results => {
+//       const movies = results.Search;
+//       let cards = "";
+//       movies.forEach(m => {
+//         cards += showCards(m);
+//       });
+
+//       $(".movie-container").html(cards);
+
+//       // Click button
+//       $(".modal-detail-button").on("click", function() {
+//         $.ajax({
+//           url:
+//             "http://www.omdbapi.com/?apikey=44254820&i=" +
+//             $(this).data("imdbid"),
+//           success: m => {
+//             const movieDetail = showMovieDetail(m);
+
+//             $(".modal-body").html(movieDetail);
+//           },
+//           error: e => {
+//             console.log(e.responseText);
+//           }
+//         });
+//       });
+//     },
+//     error: e => {
+//       console.log(e.responseText);
+//     }
+//   });
+// });
+
+// fetch
+
+const searchButton = document.querySelector(".search-button");
+searchButton.addEventListener("click", function() {
+  const inputKeyword = document.querySelector(".input-keyword");
+  fetch("http://www.omdbapi.com/?apikey=44254820&s=" + inputKeyword.value)
+    .then(response => response.json())
+    .then(response => {
+      const movies = response.Search;
       let cards = "";
-      movies.forEach(m => {
-        cards += showCards(m);
-      });
+      movies.forEach(m => (cards += showCards(m)));
+      const movieContainer = document.querySelector(".movie-container");
+      movieContainer.innerHTML = cards;
 
-      $(".movie-container").html(cards);
-
-      // Click button
-      $(".modal-detail-button").on("click", function() {
-        $.ajax({
-          url:
-            "http://www.omdbapi.com/?apikey=44254820&i=" +
-            $(this).data("imdbid"),
-          success: m => {
-            const movieDetail = showMovieDetail(m);
-
-            $(".modal-body").html(movieDetail);
-          },
-          error: e => {
-            console.log(e.responseText);
-          }
+      // click button
+      const modalDetailButton = document.querySelectorAll(
+        ".modal-detail-button"
+      );
+      modalDetailButton.forEach(btn => {
+        btn.addEventListener("click", function() {
+          const imdbid = this.dataset.imdbid;
+          fetch("http://www.omdbapi.com/?apikey=44254820&i=" + imdbid)
+            .then(response => response.json())
+            .then(m => {
+              const movieDetail = showMovieDetail(m);
+              const modalBody = document.querySelector(".modal-body");
+              modalBody.innerHTML = movieDetail;
+            });
         });
       });
-    },
-    error: e => {
-      console.log(e.responseText);
-    }
-  });
+    });
 });
 
 function showCards(m) {
